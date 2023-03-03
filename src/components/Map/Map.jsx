@@ -14,6 +14,7 @@ const Map = () => {
     zoom: 11,
   };
 
+  console.log("key: ", process.env.REACT_APP_googleMapApiKey);
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
