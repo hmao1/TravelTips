@@ -3,22 +3,38 @@ import List from "./components/List/List";
 import Map from "./components/Map/Map";
 import { CssBaseline, Grid } from "@mui/material";
 import { usePlacesData } from "./api/index";
+import { useState, useEffect } from "react";
 
 function App() {
-  const { data, isLoading, isError } = usePlacesData();
+  const [coordinates, setCoordinates] = useState({});
+  const [bounds, setBounds] = useState({});
+  const { data, isLoading, isError } = usePlacesData(bounds);
 
-  console.log(isLoading);
-  console.log("data in APP: ", data);
+  //getting the coordinates of the user's location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => {
+        setCoordinates({ lat: latitude, lng: longitude });
+      }
+    );
+  }, []);
+
+  console.log("current coordinates", coordinates);
+  console.log("data", data);
   return (
     <>
       <CssBaseline />
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
-          <List />
+          <List places={data ? data.data : []} />
         </Grid>
         <Grid item xs={12} md={8}>
-          <Map />
+          <Map
+            setBounds={setBounds}
+            setCoordinates={setCoordinates}
+            coordinates={coordinates}
+          />
         </Grid>
       </Grid>
     </>

@@ -12,7 +12,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
-const List = () => {
+const List = ({ places }) => {
   const [type, setType] = useState("");
   const [rating, setRating] = useState(null);
   const theme = useTheme();
@@ -43,13 +43,7 @@ const List = () => {
       overflow: "auto",
     },
   };
-  const places = [
-    {
-      name: "p1",
-    },
-    { name: "p2" },
-    { name: "p3" },
-  ];
+
   return (
     <Box sx={ListStyles.container}>
       <Typography variant="h4">Food & Dining around you</Typography>
@@ -81,7 +75,7 @@ const List = () => {
         </Select>
       </FormControl>
       <Grid container spacing={3} sx={ListStyles.list}>
-        {places?.map((place, ind) => (
+        {places.map((place, ind) => (
           <Grid item key={ind} xs={12}>
             <PlaceDetails place={place} />
           </Grid>

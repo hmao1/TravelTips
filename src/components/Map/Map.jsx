@@ -4,7 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-const Map = () => {
+const Map = ({ setCoordinates, setBounds, coordinates }) => {
   const minWidth = useMediaQuery("(min-width: 600px)");
   const defaultProps = {
     center: {
@@ -14,7 +14,6 @@ const Map = () => {
     zoom: 11,
   };
 
-  console.log("key: ", process.env.REACT_APP_googleMapApiKey);
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
@@ -22,6 +21,10 @@ const Map = () => {
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
         margin={[50, 50, 50, 50]}
+        onChange={(e) => {
+          setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
+          setCoordinates({ lat: e.center.lat, lng: e.center.lng });
+        }}
       >
         <AnyReactComponent lat={42.3601} lng={71.0589} text="My Marker" />
       </GoogleMapReact>
