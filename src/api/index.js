@@ -1,9 +1,6 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 
-const travelUrl =
-  "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundarys";
-
 export const usePlacesData = (bounds) => {
   const { data, isLoading, isError } = useQuery(
     ["boundsCoordinates", bounds],
@@ -11,7 +8,7 @@ export const usePlacesData = (bounds) => {
       axios
         .request({
           method: "GET",
-          url: travelUrl,
+          url: process.env.REACT_APP_TravelUrl,
           params: {
             bl_latitude: bounds.sw.lat,
             tr_latitude: bounds.ne.lat,
@@ -33,8 +30,8 @@ export const usePlacesData = (bounds) => {
           );
           return null;
         }),
-    // { enabled: !!bounds && Object.keys(bounds).length !== 0 }
-    { enabled: false }
+    { enabled: !!bounds && Object.keys(bounds).length !== 0 }
+    // { enabled: false }
   );
 
   return { data, isLoading, isError };

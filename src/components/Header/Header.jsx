@@ -103,7 +103,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar sx={styles.toolbar}>
         <Typography variant="h5" sx={styles.title}>
-          Travel Advisor
+          Travel Tips
         </Typography>
 
         <Box display="flex">
