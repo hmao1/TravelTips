@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PinDropIcon from "@mui/icons-material/PinDrop";
 
 const placeDetailsStyles = {
   chip: {
@@ -52,8 +53,18 @@ const placeDetailsStyles = {
 //     </Card>) : null}
 //   );
 // };
-const PlaceDetails = ({ place }) => {
-  console.log(place);
+const PlaceDetails = ({ place, selectedPlace, setSelectedPlace }) => {
+  const handleSelectedPlace = () => {
+    const isPlaceAlreadySelected = selectedPlace.includes(place);
+    if (isPlaceAlreadySelected) {
+      const newSelectedPlace = selectedPlace.filter(
+        (item) => item.name !== place.name
+      );
+      setSelectedPlace(newSelectedPlace);
+    } else setSelectedPlace([...selectedPlace, place]);
+  };
+
+  console.log(selectedPlace);
   return (
     <>
       {place.name ? (
@@ -134,6 +145,13 @@ const PlaceDetails = ({ place }) => {
               onClick={() => window.open(place.website, "_blank")}
             >
               Website
+            </Button>
+            <Button
+              size="small"
+              color={selectedPlace.includes(place) ? "success" : "primary"}
+              onClick={handleSelectedPlace}
+            >
+              <PinDropIcon />
             </Button>
           </CardActions>
         </Card>

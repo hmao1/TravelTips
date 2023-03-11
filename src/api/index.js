@@ -2,13 +2,16 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 export const usePlacesData = (bounds) => {
+  //for development purposes, remove when deploying
+  const restaurantURL =
+    "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
   const { data, isLoading, isError } = useQuery(
     ["boundsCoordinates", bounds],
     () =>
       axios
         .request({
           method: "GET",
-          url: process.env.REACT_APP_TravelUrl,
+          url: restaurantURL,
           params: {
             bl_latitude: bounds.sw.lat,
             tr_latitude: bounds.ne.lat,

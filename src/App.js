@@ -10,6 +10,9 @@ function App() {
   const [bounds, setBounds] = useState({});
   const { data, isLoading, isError } = usePlacesData(bounds);
 
+  //add selected place to the list
+  const [selectedPlace, setSelectedPlace] = useState([]);
+
   //getting the coordinates of the user's location
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -19,22 +22,27 @@ function App() {
     );
   }, []);
 
-  console.log("current coordinates", coordinates);
-
   return (
     <>
       <CssBaseline />
       <Header />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
-          <List places={data ? data.data : []} />
+          <List
+            places={data ? data.data : []}
+            setSelectedPlace={setSelectedPlace}
+            selectedPlace={selectedPlace}
+            isLoading={isLoading}
+            isError={isError}
+          />
         </Grid>
         <Grid item xs={12} md={8}>
           <Map
             setBounds={setBounds}
             setCoordinates={setCoordinates}
             coordinates={coordinates}
-            places={data ? data.data : []}
+            // places={data ? data.data : []}
+            selectedPlace={selectedPlace}
           />
         </Grid>
       </Grid>

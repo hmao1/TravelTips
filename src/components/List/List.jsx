@@ -12,7 +12,13 @@ import {
 import { useTheme } from "@mui/material/styles";
 import PlaceDetails from "../PlaceDetails/PlaceDetails";
 
-const List = ({ places }) => {
+const List = ({
+  places,
+  isLoading,
+  isError,
+  selectedPlace,
+  setSelectedPlace,
+}) => {
   const [type, setType] = useState("");
   const [rating, setRating] = useState(null);
   const theme = useTheme();
@@ -74,13 +80,23 @@ const List = ({ places }) => {
           <MenuItem value="4.5">Above 4.5</MenuItem>
         </Select>
       </FormControl>
-      <Grid container spacing={3} sx={ListStyles.list}>
-        {places.map((place, ind) => (
-          <Grid item key={ind} xs={12}>
-            <PlaceDetails place={place} />
-          </Grid>
-        ))}
-      </Grid>
+      {isLoading ? (
+        <div style={ListStyles.loading}>
+          <CircularProgress size="5rem" />
+        </div>
+      ) : (
+        <Grid container spacing={3} sx={ListStyles.list}>
+          {places.map((place, ind) => (
+            <Grid item key={ind} xs={12}>
+              <PlaceDetails
+                place={place}
+                selectedPlace={selectedPlace}
+                setSelectedPlace={setSelectedPlace}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Box>
   );
 };
