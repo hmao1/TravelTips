@@ -64,7 +64,6 @@ const PlaceDetails = ({ place, selectedPlace, setSelectedPlace }) => {
     } else setSelectedPlace([...selectedPlace, place]);
   };
 
-  console.log(selectedPlace);
   return (
     <>
       {place.name ? (

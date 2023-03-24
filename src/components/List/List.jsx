@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   CircularProgress,
   Grid,
@@ -18,11 +18,11 @@ const List = ({
   isError,
   selectedPlace,
   setSelectedPlace,
+  pinClicked,
 }) => {
   const [type, setType] = useState("");
   const [rating, setRating] = useState(null);
   const theme = useTheme();
-
   const ListStyles = {
     formControl: {
       margin: theme.spacing(1),
@@ -49,6 +49,17 @@ const List = ({
       overflow: "auto",
     },
   };
+
+  const placesRef = useRef([]);
+  //this is to scroll to the place when pin is clicked
+  useEffect(() => {
+    if (pinClicked) {
+      const index = places.findIndex(
+        (place) => place.location_id === pinClicked
+      );
+      placesRef.current[index].scrollIntoView({ behavior: "smooth" });
+    }
+  }, [pinClicked, places]);
 
   return (
     <Box sx={ListStyles.container}>
@@ -87,7 +98,12 @@ const List = ({
       ) : (
         <Grid container spacing={3} sx={ListStyles.list}>
           {places.map((place, ind) => (
-            <Grid item key={ind} xs={12}>
+            <Grid
+              item
+              ref={(el) => (placesRef.current[ind] = el)}
+              key={ind}
+              xs={12}
+            >
               <PlaceDetails
                 place={place}
                 selectedPlace={selectedPlace}

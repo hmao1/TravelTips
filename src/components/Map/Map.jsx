@@ -2,7 +2,13 @@ import GoogleMapReact from "google-map-react";
 import { Paper, Typography, useMediaQuery, Rating } from "@mui/material";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-const Map = ({ setCoordinates, setBounds, coordinates, selectedPlace }) => {
+const Map = ({
+  setCoordinates,
+  setBounds,
+  coordinates,
+  selectedPlace,
+  setPinClicked,
+}) => {
   const minWidth = useMediaQuery("(min-width: 600px)");
   const mapStyle = {
     paper: {
@@ -55,7 +61,14 @@ const Map = ({ setCoordinates, setBounds, coordinates, selectedPlace }) => {
               lng={Number(place.longitude)}
               key={i}
             >
-              <LocationOnIcon color="primary" fontSize="medium" />
+              <LocationOnIcon
+                color="primary"
+                fontSize="medium"
+                onClick={() => {
+                  console.log("map pin clicked:", place);
+                  setPinClicked(place.location_id);
+                }}
+              />
               {/* <Paper elevation={3} sx={mapStyle.paper}>
                 <Typography
                   sx={mapStyle.typography}
