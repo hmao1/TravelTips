@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, InputBase, Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
+import { useState } from "react";
 
 /**
  *
@@ -52,7 +53,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ setCoordinates }) => {
   const theme = useTheme();
   const styles = {
     title: {
@@ -99,6 +100,14 @@ const Header = () => {
     },
   };
 
+  const [autoComplete, setAutoComplete] = useState(null);
+  const autoOnLoad = (autoC) => setAutoComplete(autoC);
+  const onPlaceChanged = () => {
+    const lat = autoComplete.getPlace().geometry.location.lat();
+    const lng = autoComplete.getPlace().geometry.location.lng();
+    setCoordinates({ lat, lng });
+  };
+
   return (
     <AppBar position="static">
       <Toolbar sx={styles.toolbar}>
@@ -110,16 +119,17 @@ const Header = () => {
           <Typography variant="h6" sx={styles.title}>
             Explore new places
           </Typography>
-          {/* <Autocomplete> */}
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+          <Autocomplete onLoad={autoOnLoad} onPlaceChanged={onPlaceChanged}>
+            <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+          </Autocomplete>
         </Box>
       </Toolbar>
     </AppBar>

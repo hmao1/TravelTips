@@ -21,7 +21,8 @@ const List = ({
   pinClicked,
 }) => {
   const [type, setType] = useState("");
-  const [rating, setRating] = useState(null);
+  const [rating, setRating] = useState("ALL");
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
   const theme = useTheme();
   const ListStyles = {
     formControl: {
@@ -53,13 +54,27 @@ const List = ({
   const placesRef = useRef([]);
   //this is to scroll to the place when pin is clicked
   useEffect(() => {
+    //only fires when pin is clicked
     if (pinClicked) {
       const index = places.findIndex(
         (place) => place.location_id === pinClicked
       );
-      placesRef.current[index].scrollIntoView({ behavior: "smooth" });
+      placesRef?.current[index]?.scrollIntoView({ behavior: "smooth" });
     }
   }, [pinClicked, places]);
+
+  //enable filtering
+  useEffect(() => {
+    if (places.length > 0) {
+      if (rating === "ALL") setFilteredPlaces(places);
+      else {
+        const filteredPlaces = places.filter(
+          (place) => Number(place.rating) >= Number(rating)
+        );
+        setFilteredPlaces(filteredPlaces);
+      }
+    }
+  }, [places, rating]);
 
   return (
     <Box sx={ListStyles.container}>
@@ -85,7 +100,7 @@ const List = ({
           label="rating"
           onChange={(e) => setRating(e.target.value)}
         >
-          <MenuItem value="">All</MenuItem>
+          <MenuItem value="ALL">All</MenuItem>
           <MenuItem value="3">Above 3.0</MenuItem>
           <MenuItem value="4">Above 4.0</MenuItem>
           <MenuItem value="4.5">Above 4.5</MenuItem>
@@ -97,7 +112,7 @@ const List = ({
         </div>
       ) : (
         <Grid container spacing={3} sx={ListStyles.list}>
-          {places.map((place, ind) => (
+          {filteredPlaces.map((place, ind) => (
             <Grid
               item
               ref={(el) => (placesRef.current[ind] = el)}

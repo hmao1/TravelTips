@@ -21,6 +21,7 @@ function App() {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => {
         setCoordinates({ lat: latitude, lng: longitude });
+        setSelectedPlace([{ latitude: latitude, longitude: longitude }]);
       }
     );
   }, []);
@@ -28,7 +29,7 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <Header />
+      <Header setCoordinates={setCoordinates} />
       <Grid container spacing={3} style={{ width: "100%" }}>
         <Grid item xs={12} md={4}>
           <List

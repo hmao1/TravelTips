@@ -39,12 +39,12 @@ const Map = ({
     },
     zoom: 15,
   };
-  console.log("coordinates", coordinates);
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: process.env.REACT_APP_googleMapApiKey }}
+        center={coordinates ? coordinates : defaultProps.center}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
         margin={[50, 50, 50, 50]}
@@ -65,7 +65,6 @@ const Map = ({
                 color="primary"
                 fontSize="medium"
                 onClick={() => {
-                  console.log("map pin clicked:", place);
                   setPinClicked(place.location_id);
                 }}
               />
